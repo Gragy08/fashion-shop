@@ -11,6 +11,8 @@ router.get('/category', articleController.category);
 
 router.get('/category/create', articleController.createCategory);
 
+router.get('/category/trash', articleController.trashCategory);
+
 router.post(
   '/category/create', 
   upload.none(), 
@@ -26,5 +28,11 @@ router.patch(
   articleValidate.createCategoryPost, 
   articleController.editCategoryPatch
 );
+
+router.patch('/category/delete/:id', articleController.deleteCategoryPatch);
+
+router.patch('/category/undo/:id', articleController.undoCategoryPatch);
+
+router.delete('/category/destroy/:id', articleController.destroyCategoryDelete);
 
 export default router;

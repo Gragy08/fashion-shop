@@ -10,20 +10,14 @@ block main
               h4.card-title #{pageTitle}
             // end col
             .col-auto
-              a.btn.btn-danger.me-1(
-                href=`/${pathAdmin}/article/category/trash`
+              a.btn.btn-info(
+                href=`/${pathAdmin}/article/category`
                 )
-                i.las.la-trash-alt.me-1
-                | Thùng rác
-              a.btn.btn-primary(
-                href=`/${pathAdmin}/article/category/create`
-                )
-                i.fa-solid.fa-plus.me-1
-                | Tạo danh mục
+                <i class="fa-solid fa-arrow-left me-1"></i>
+                | Quay lại danh sách
           // end row
         // end card-header
         .card-body.pt-0
-          //- Table
           .table-responsive
             table.table.table-striped.mb-0
               thead.table-light
@@ -47,14 +41,21 @@ block main
                         span.badge.bg-danger Tạm dừng
                     td #{item.view}
                     td.text-end
-                      a(href=`/${pathAdmin}/article/category/edit/${item.id}` style="font-size: 20px; margin-right: 10px;")
-                        i.las.la-pen.text-secondary.font-20.text-info 
                       a(
                         href="javascript:;"
                         button-api
                         data-method="PATCH"
-                        data-api=`/${pathAdmin}/article/category/delete/${item.id}`
-                        style="font-size: 20px; margin-right: 5px;"
+                        data-api=`/${pathAdmin}/article/category/undo/${item.id}`
+                        class="me-2"
+                        style="font-size: 16px;"
                         )
-                        i.las.la-trash-alt.text-secondary.font-16.text-danger
+                        <i class="fa-solid fa-rotate-left"></i>
+                      a(
+                        href="javascript:;"
+                        button-api
+                        data-method="DELETE"
+                        data-api=`/${pathAdmin}/article/category/destroy/${item.id}`
+                        style="font-size: 16px; margin-right: 10px;"
+                        )
+                        <i class="fa-solid fa-trash text-danger"></i>
     // end col
