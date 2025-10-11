@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import adminRoutes from "./routes/admin/index.route";
 import clientRoutes from "./routes/client/index.route";
-import { pathAdmin } from './configs/variable.config';
+import { domainCDN, pathAdmin } from './configs/variable.config';
 import dotenv from 'dotenv';
 import { connectDB } from './configs/database.config';
 
@@ -46,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Tạo biến toàn cục trong file Pug
 app.locals.pathAdmin = pathAdmin;
+app.locals.domainCDN = domainCDN;
 
 app.use(`/${pathAdmin}`, adminRoutes);
 app.use("/", clientRoutes);
