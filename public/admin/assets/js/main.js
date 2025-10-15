@@ -329,7 +329,7 @@ if(modalChangeFileName) {
   let buttonClicked = null;
 
   const listButtonChangeFileName = document.querySelectorAll("[button-change-file-name]");
-  listButtonPreviewFile.forEach(button => {
+  listButtonChangeFileName.forEach(button => {
     button.addEventListener("click", () => {
       buttonClicked = button;
     })
