@@ -62,6 +62,7 @@ if(articleCreateCategoryForm) {
       const slug = event.target.slug.value;
       const parent = event.target.parent.value;
       const status = event.target.status.value;
+      const avatar = event.target.avatar.value;
       // const description = event.target.description.value;
       const description = tinymce.get("description").getContent();
 
@@ -71,6 +72,7 @@ if(articleCreateCategoryForm) {
       formData.append("slug", slug);
       formData.append("parent", parent);
       formData.append("status", status);
+      formData.append("avatar", avatar);
       formData.append("description", description);
 
       fetch(`/${pathAdmin}/article/category/create`, {
@@ -116,6 +118,7 @@ if(articleEditCategoryForm) {
       const slug = event.target.slug.value;
       const parent = event.target.parent.value;
       const status = event.target.status.value;
+      const avatar = event.target.avatar.value;
       const description = tinymce.get("description").getContent();
 
       // Tạo formData
@@ -124,6 +127,7 @@ if(articleEditCategoryForm) {
       formData.append("slug", slug);
       formData.append("parent", parent);
       formData.append("status", status);
+      formData.append("avatar", avatar);
       formData.append("description", description);
 
       fetch(`/${pathAdmin}/article/category/edit/${id}`, {
@@ -545,3 +549,22 @@ if(listButtonDeleteFolder.length > 0) {
   })
 }
 // End Button Delete Folder
+
+// Form Group File
+const formGroupFile = document.querySelector("[form-group-file]");
+if(formGroupFile) {
+  const inputFile = formGroupFile.querySelector("[input-file]");
+  const previewFile = formGroupFile.querySelector("[preview-file]");
+
+  inputFile.addEventListener("input", () => {
+    const value = inputFile.value;
+    previewFile.querySelector("img").src = `${domainCDN}${value}`;
+  })
+
+  // Hiển thị mặc định
+  if(inputFile.value) {
+    const value = inputFile.value;
+    previewFile.querySelector("img").src = `${domainCDN}${value}`;
+  }
+}
+// End Form Group File

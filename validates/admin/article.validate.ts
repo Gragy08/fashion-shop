@@ -15,6 +15,7 @@ export const createCategoryPost = (req: Request, res: Response, next: NextFuncti
       }),
     parent: Joi.string().allow(''),
     status: Joi.string().allow(''),
+    avatar: Joi.string().allow(''),
     description: Joi.string().allow(''),
   })
 
