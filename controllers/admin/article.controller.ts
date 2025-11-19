@@ -183,8 +183,6 @@ export const editCategoryPatch = async (req: Request, res: Response) => {
       lower: true
     });
 
-    console.log(req.body);
-
     await CategoryBlog.updateOne({
       _id: id,
       deleted: false
