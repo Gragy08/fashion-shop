@@ -55,4 +55,6 @@ router.patch(
   articleController.editPatch
 );
 
+router.patch('/delete/:id', articleController.deletePatch);
+
 export default router;
