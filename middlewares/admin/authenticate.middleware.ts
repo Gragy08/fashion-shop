@@ -1,0 +1,42 @@
+import { NextFunction, Request, Response } from "express";
+import { pathAdmin } from "../../configs/variable.config";
+import jwt from "jsonwebtoken";
+import AccountAdmin from "../../models/account-admin.model";
+
+export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.cookies.tokenAdmin;
+
+    if(!token) {
+      res.redirect(`/${pathAdmin}/account/login`);
+      return;
+    }
+
+    // Giải mã token
+    const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`) as jwt.JwtPayload;
+    
+    const existAccount = await AccountAdmin.findOne({
+      _id: decoded.id,
+      email: decoded.email,
+      deleted: false,
+      status: "active"
+    })
+
+    if(!existAccount) {
+      res.redirect(`/${pathAdmin}/account/login`);
+      return;
+    }
+
+    // Lưu thông tin tài khoản vào res.locals để sử dụng trong các middleware hoặc route sau này
+    res.locals.accountAdmin = {
+      fullName: existAccount.fullName,
+      email: existAccount.email,
+      avatar: existAccount.avatar,
+    };
+
+    next();
+  } catch (error) {
+    console.log(error);
+    res.redirect(`/${pathAdmin}/account/login`);
+  }
+}

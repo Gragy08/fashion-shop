@@ -5,6 +5,7 @@ import clientRoutes from "./routes/client/index.route";
 import { domainCDN, pathAdmin } from './configs/variable.config';
 import dotenv from 'dotenv';
 import { connectDB } from './configs/database.config';
+import cookieParser from "cookie-parser";
 
 // Load biến môi trường từ file .env
 dotenv.config();
@@ -48,11 +49,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.locals.pathAdmin = pathAdmin;
 app.locals.domainCDN = domainCDN;
 
+// Khởi tạo thư viện lấy cookie
+app.use(cookieParser());
+
 app.use(`/${pathAdmin}`, adminRoutes);
 app.use("/", clientRoutes);
 
 app.listen(port, () => {
   console.log(`Website đang chạy trên cổng ${port}`);
 });
-
-//giaqui1712_db_user / mIbSvkvF9e3QzkXx
