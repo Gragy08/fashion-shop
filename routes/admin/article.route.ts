@@ -34,9 +34,9 @@ router.patch(
 
 router.patch('/category/delete/:id', checkPermission("article-category-delete"), articleController.deleteCategoryPatch);
 
-router.patch('/category/undo/:id', checkPermission("article-category-delete"), articleController.undoCategoryPatch);
+router.patch('/category/undo/:id', checkPermission("article-category-trash"), articleController.undoCategoryPatch);
 
-router.delete('/category/destroy/:id', checkPermission("article-category-delete"), articleController.destroyCategoryDelete);
+router.delete('/category/destroy/:id', checkPermission("article-category-trash"), articleController.destroyCategoryDelete);
 
 router.get('/create', articleController.create);
 
