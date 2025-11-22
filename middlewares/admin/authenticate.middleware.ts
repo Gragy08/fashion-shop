@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { pathAdmin } from "../../configs/variable.config";
+import { pathAdmin, permissionList } from "../../configs/variable.config";
 import jwt from "jsonwebtoken";
 import AccountAdmin from "../../models/account-admin.model";
+import Role from "../../models/role.model";
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -22,6 +23,9 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         avatar: "/admin/assets/images/users/avatar-1.jpg",
         isSuperAdmin: true
       };
+
+      // trả cho FE danh sách tất cả quyền nêu là super admin
+      res.locals.permissions = permissionList.map(item => item.id);
     } else {
       const existAccount = await AccountAdmin.findOne({
         _id: decoded.id,
@@ -41,11 +45,42 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         avatar: existAccount.avatar,
         isSuperAdmin: false
       };
+
+      // Trả cho FE danh sách quyền của tài khoản đang đăng nhập
+      let permissions: string[] = [];
+
+      for (const roleId of existAccount.roles) {
+        const roleInfo = await Role.findOne({
+          _id: roleId,
+          deleted: false,
+          status: "active"
+        })
+
+        if(roleInfo) {
+          // gộp quyền - mỗi vòng lặp lấy ra 1 role và thêm liên tục vào mảng cũ trước đó
+          permissions = [...permissions, ...roleInfo.permissions];
+        }
+      }
+
+      res.locals.permissions = permissions;
     }
 
     next();
   } catch (error) {
     console.log(error);
     res.redirect(`/${pathAdmin}/account/login`);
+  }
+}
+
+export const checkPermission = (permission: string) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if(res.locals.permissions.includes(permission)) {
+      next();
+    } else {
+      res.json({
+        code: "error",
+        message: "Không đủ quyền!"
+      });
+    }
   }
 }

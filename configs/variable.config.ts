@@ -8,6 +8,10 @@ export const permissionList = [
     name: "Trang tổng quan"
   },
   {
+    id: "article-role",
+    name: "Quản lý bài viết"
+  },
+  {
     id: "article-list",
     name: "Danh sách bài viết"
   },
@@ -48,6 +52,10 @@ export const permissionList = [
     name: "Thùng rác danh mục bài viết"
   },
   {
+    id: "role-role",
+    name: "Quản lý nhóm quyền"
+  },
+  {
     id: "role-list",
     name: "Danh sách nhóm quyền"
   },
@@ -66,6 +74,30 @@ export const permissionList = [
   {
     id: "role-trash",
     name: "Thùng rác nhóm quyền"
+  },
+  {
+    id: "account-admin-role",
+    name: "Quản lý tài khoản quản trị"
+  },
+  {
+    id: "account-admin-list",
+    name: "Danh sách tài khoản quản trị"
+  },
+  {
+    id: "account-admin-create",
+    name: "Tạo tài khoản quản trị"
+  },
+  {
+    id: "account-admin-edit",
+    name: "Sửa tài khoản quản trị"
+  },
+  {
+    id: "account-admin-change-password",
+    name: "Đổi mật khẩu tài khoản quản trị"
+  },
+  {
+    id: "account-admin-delete",
+    name: "Xóa tài khoản quản trị"
   },
   {
     id: "file-manager",
