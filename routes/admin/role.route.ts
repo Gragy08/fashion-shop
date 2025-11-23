@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as roleController from "../../controllers/admin/role.controller";
 import multer from "multer";
 import * as roleValidate from "../../validates/admin/role.validate";
+import { checkPermission } from "../../middlewares/admin/authenticate.middleware";
 
 const router = Router();
 
@@ -11,7 +12,8 @@ router.get('/create', roleController.create);
 
 router.post(
   '/create', 
-  upload.none(), 
+  upload.none(),
+  checkPermission("role-create"),
   roleValidate.createPost,
   roleController.createPost
 );
@@ -23,10 +25,11 @@ router.get('/edit/:id', roleController.edit);
 router.patch(
   '/edit/:id', 
   upload.none(), 
+  checkPermission("role-edit"),
   roleValidate.createPost,
   roleController.editPatch
 );
 
-router.patch('/delete/:id', roleController.deletePatch);
+router.patch('/delete/:id', checkPermission("role-delete"), roleController.deletePatch);
 
 export default router;
