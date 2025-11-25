@@ -103,6 +103,23 @@
                     li.nav-item
                       a.nav-link(href=`/${pathAdmin}/account-admin/list`) Danh sách tài khoản
                     // end nav-item
+          if (permissions.includes("log-activity-role"))
+            li.nav-item
+              a.nav-link(
+                aria-controls="sidebarLog" 
+                aria-expanded="false" 
+                role="button" 
+                data-bs-toggle="collapse" 
+                href="#sidebarLog"
+                )
+                i.iconoir-clipboard-check.menu-icon
+                span Hoạt động quản trị
+              #sidebarLog.collapse
+                ul.nav.flex-column
+                  if (permissions.includes("log-activity-list"))
+                    li.nav-item
+                      a.nav-link(href=`/${pathAdmin}/admin-log/list`) Danh sách hoạt động
+                    // end nav-item
           if (permissions.includes("file-manager"))
             li.nav-item
               a.nav-link(

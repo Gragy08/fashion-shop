@@ -1,0 +1,68 @@
+extends ../layouts/default.pug
+include ../mixins/pagination.pug
+include ../mixins/form-search.pug
+
+block main
+  if permissions.includes('log-activity-list')
+    .row
+      .col-12
+        .card
+          .card-header
+            .row.align-items-center
+              .col
+                h4.card-title #{pageTitle}
+              // end col
+              
+              // end col
+            // end row
+          // end card-header
+          .card-body.pt-0
+            .row.align-items-center
+              .col-lg-6
+                +form-search()
+              //- .col-lg-6
+              //-   // Bộ lọc thời gian - chọn ngày trong 30 ngày gần nhất (giao diện)
+              //-   .d-flex.justify-content-lg-end.mt-3.mt-lg-0
+              //-     .input-group.mb-3
+              //-       span.input-group-text.fs-12 Từ
+              //-       input.form-control(type="date" id="filterStartDate")
+              //-       span.input-group-text.fs-12 Tới
+              //-       input.form-control(type="date" id="filterEndDate")
+              //-       a.btn.btn-secondary
+              //-         i.iconoir-reply
+              //-         | Xóa bộ lọc
+            .table-responsive
+              table.table.table-striped.mb-0
+                thead.table-light
+                  tr
+                    th STT
+                    th Avatar
+                    th Tên Admin
+                    th Admin ID
+                    th Mô tả hành động
+                    th Method
+                    th Route
+                    th.text-end Thời gian
+                tbody
+                  each item, index in recordList
+                    tr
+                      td #{pagination.skip + index + 1}
+                      td
+                        if(item.avatar)
+                          img(
+                            src=`${domainCDN}${item.avatar}`
+                            class="rounded thumb-md me-1 d-inline"
+                          )
+                        else
+                          img(
+                            src=`${item.avatarSuperAdmin ? item.avatarSuperAdmin : item.avatarUnknown}`
+                            class="rounded thumb-md me-1 d-inline"
+                          )
+                      td #{item.name}
+                      td #{item.adminId}
+                      td #{item.title}
+                      td #{item.method}
+                      td #{item.route}
+                      td.text-end #{item.formattedCreatedAt}
+            +pagination()
+      // end col

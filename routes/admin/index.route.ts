@@ -6,6 +6,7 @@ import fileManagerRoutes from "./file-manager.route";
 import roleRoutes from "./role.route";
 import accountAdminRoutes from "./account-admin.route";
 import accountRoutes from "./account.route";
+import adminLogRoutes from "./admin-log.route";
 
 import * as authMiddleware from "../../middlewares/admin/authenticate.middleware";
 
@@ -17,6 +18,7 @@ router.use('/helper', authMiddleware.verifyToken, helperRoutes);
 router.use('/file-manager', authMiddleware.verifyToken, fileManagerRoutes);
 router.use('/role', authMiddleware.verifyToken, roleRoutes);
 router.use('/account-admin', authMiddleware.verifyToken, accountAdminRoutes);
+router.use('/admin-log', authMiddleware.verifyToken, adminLogRoutes);
 router.use('/account', accountRoutes);
 
 export default router;

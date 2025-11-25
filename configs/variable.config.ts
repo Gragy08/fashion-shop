@@ -100,6 +100,14 @@ export const permissionList = [
     name: "Xóa tài khoản quản trị"
   },
   {
+    id: "log-activity-role",
+    name: "Quản lý hoạt động quản trị"
+  },
+  {
+    id: "log-activity-list",
+    name: "Danh sách hoạt động quản trị"
+  },
+  {
     id: "file-manager",
     name: "Quản lý file"
   },
