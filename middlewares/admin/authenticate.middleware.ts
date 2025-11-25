@@ -3,8 +3,9 @@ import { pathAdmin, permissionList } from "../../configs/variable.config";
 import jwt from "jsonwebtoken";
 import AccountAdmin from "../../models/account-admin.model";
 import Role from "../../models/role.model";
+import { RequestAccount } from "../../interfaces/request.interface";
 
-export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken = async (req: RequestAccount, res: Response, next: NextFunction) => {
   try {
     const token = req.cookies.tokenAdmin;
 
@@ -26,6 +27,9 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
 
       // trả cho FE danh sách tất cả quyền nêu là super admin
       res.locals.permissions = permissionList.map(item => item.id);
+
+      // thêm adminId vào req để log hành động
+      req.adminId = process.env.SUPER_ADMIN_ID;
     } else {
       const existAccount = await AccountAdmin.findOne({
         _id: decoded.id,
@@ -62,7 +66,11 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         }
       }
 
+      // trả về FE biến chứa danh sách quyền
       res.locals.permissions = permissions;
+
+      // thêm adminId vào req để log hành động
+      req.adminId = existAccount.id;
     }
 
     next();

@@ -4,6 +4,7 @@ import { buildCategoryTree } from '../../helpers/category.helper';
 import slugify from 'slugify';
 import { pathAdmin } from '../../configs/variable.config';
 import Blog from '../../models/blog.model';
+import { logAdminAction } from '../../helpers/log.helper';
 
 export const category = async (req: Request, res: Response) => {
   // const recordList: any = await CategoryBlog.find({
@@ -305,6 +306,9 @@ export const createPost = async (req: Request, res: Response) => {
     const newRecord = new Blog(req.body);
     await newRecord.save();
 
+    // req có adminId vì đã đi qua Middleware xác thực và thêm adminId vào req
+    logAdminAction(req, `Đã tạo bài viết: ${req.body.name} (Id: ${newRecord._id})`);
+
     res.json({
       code: "success",
       message: "Tạo bài viết thành công!"
@@ -440,6 +444,9 @@ export const editPatch = async (req: Request, res: Response) => {
       deleted: false
     }, req.body);
 
+    // req có adminId vì đã đi qua Middleware xác thực và thêm adminId vào req
+    logAdminAction(req, `Đã cập nhật bài viết: ${req.body.name} (Id: ${id})`);
+
     res.json({
       code: "success",
       message: "Cập nhật bài viết thành công!"
@@ -462,6 +469,9 @@ export const deletePatch = async (req: Request, res: Response) => {
       deleted: true,
       deletedAt: Date.now()
     })
+
+    // req có adminId vì đã đi qua Middleware xác thực và thêm adminId vào req
+    logAdminAction(req, `Đã xóa bài viết có Id: ${id}`);
 
     res.json({
       code: "success",
