@@ -9,7 +9,11 @@ const upload = multer();
 
 router.get('/', fileManagerController.fileManager);
 
-router.post('/upload', checkPermission("file-manager"), upload.array('files'), fileManagerController.uploadPost);
+router.post('/upload', 
+  upload.array('files'), 
+  checkPermission("file-manager"), 
+  fileManagerController.uploadPost
+);
 
 router.patch(
   '/change-file-name/:id', 
