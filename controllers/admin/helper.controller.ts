@@ -3,11 +3,13 @@ import slugify from 'slugify';
 import CategoryBlog from '../../models/category-blog.model';
 import Blog from '../../models/blog.model';
 import { generateRandomString } from '../../helpers/generate.helper';
+import CategoryProduct from '../../models/category-product.model';
 import mongoose from 'mongoose';
 
 const models: any = {
   CategoryBlog: CategoryBlog,
-  Blog: Blog
+  Blog: Blog,
+  CategoryProduct: CategoryProduct
 };
 
 export const generateSlugPost = async (req: Request, res: Response) => {
