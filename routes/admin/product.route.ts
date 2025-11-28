@@ -27,4 +27,6 @@ router.patch(
   productController.editCategoryPatch
 );
 
+router.patch('/category/delete/:id', productController.deleteCategoryPatch);
+
 export default router;
