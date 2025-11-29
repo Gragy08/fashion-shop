@@ -593,6 +593,21 @@ const getCheckboxList = (name) => {
 }
 // End Checkbox List
 
+// Get Multi File
+const getMultiFile = (name) => {
+  const boxMultiFile = document.querySelector(`[multi-file="${name}"]`);
+  const listImage = boxMultiFile.querySelectorAll(`img[src-relative]`);
+  const listLink = [];
+  listImage.forEach(image => {
+    const link = image.getAttribute("src-relative");
+    if(link) {
+      listLink.push(link);
+    }
+  })
+  return listLink;
+}
+// End Get Multi File
+
 // Article Create Form
 const articleCreateForm = document.querySelector("#articleCreateForm");
 if(articleCreateForm) {
@@ -1268,6 +1283,7 @@ if(productCreateForm) {
       const category = getCheckboxList("category");
       const description = tinymce.get("description").getContent();
       const content = tinymce.get("content").getContent();
+      const images = getMultiFile("images");
 
       // Tạo FormData
       const formData = new FormData();
@@ -1278,6 +1294,7 @@ if(productCreateForm) {
       formData.append("category", JSON.stringify(category));
       formData.append("description", description);
       formData.append("content", content);
+      formData.append("images", JSON.stringify(images));
       
       fetch(`/${pathAdmin}/product/create`, {
         method: "POST",
@@ -1298,3 +1315,94 @@ if(productCreateForm) {
   ;
 }
 // End Product Create Form
+
+// Checkbox Multi
+const listCheckboxInput = document.querySelectorAll(".checkbox-input");
+if(listCheckboxInput.length > 0) {
+  const inputCheckboxAll = document.querySelector(".checkbox-all");
+
+  inputCheckboxAll.addEventListener("change", () => {
+    listCheckboxInput.forEach(input => {
+      input.checked = inputCheckboxAll.checked;
+    })
+  })
+
+  listCheckboxInput.forEach(input => {
+    input.addEventListener("change", () => {
+      const listCheckboxInputChecked = document.querySelectorAll(".checkbox-input:checked");
+      if(listCheckboxInputChecked.length == listCheckboxInput.length) {
+        inputCheckboxAll.checked = true;
+      } else {
+        inputCheckboxAll.checked = false;
+      }
+    })
+  })
+}
+// End Checkbox Multi
+
+// Button Copy Multi
+const buttonCopyMulti = document.querySelector("[button-copy-multi]");
+if(buttonCopyMulti) {
+  buttonCopyMulti.addEventListener("click", () => {
+    const listCheckboxInputChecked = document.querySelectorAll(".checkbox-input:checked");
+    const listLink = [];
+    listCheckboxInputChecked.forEach(input => {
+      listLink.push(input.value);
+    })
+    // Copy to clipboard
+    navigator.clipboard.writeText(JSON.stringify(listLink));
+    notyf.success("Đã copy!");
+  })
+}
+// End Button Copy Multi
+
+// Button Paste
+const listButtonPaste = document.querySelectorAll("[button-paste]");
+if(listButtonPaste) {
+  listButtonPaste.forEach(buttonPaste => {
+    // Lấy phần tử chứa danh sách hình ảnh, 
+    // dùng closest để tìm phần tử cha gần nhất có class là form-multi-file,
+    // rồi từ đó tìm đến inner-list-image
+    // Làm như vậy để hỗ trợ nhiều form-multi-file trên cùng một trang
+    const elementListImage = buttonPaste.closest(".form-multi-file").querySelector(".inner-list-image");
+
+    buttonPaste.addEventListener("click", async () => {
+      const listLinkJson = await navigator.clipboard.readText();
+      const listLink = JSON.parse(listLinkJson);
+      for (const link of listLink) {
+        // Thêm vào danh sách hình ảnh, insertAdjacentHTML để không bị mất sự kiện, beforeend để thêm vào cuối
+        elementListImage.insertAdjacentHTML("beforeend", `
+          <div class="inner-image">
+            <img src="${domainCDN}${link}" alt="" src-relative="${link}">
+            <span class="inner-remove">x</span>
+          </div>
+        `);
+        // Gửi thuộc tính src-relative lên BE để dễ dàng lưu trữ
+      }
+    })
+
+    // Khởi tạo sortable, sắp xếp lại hình ảnh khi kéo thả
+    new Sortable(elementListImage, {
+      animation: 150
+    });
+  })
+}
+// End Button Paste
+
+// Button Remove Image
+const listElementListImage = document.querySelectorAll(".form-multi-file .inner-list-image");
+if(listElementListImage.length > 0) {
+  listElementListImage.forEach(elementListImage => {
+    elementListImage.addEventListener("click", (event) => {
+      // hàm closet tìm phần tử cha gần nhất có class là inner-remove
+      if(event.target.closest(".inner-remove")) {
+        // Lấy phần tử cha của nút xóa và xóa nó
+        const parentItem = event.target.closest(".inner-image");
+        if(parentItem) {
+          parentItem.remove();
+        }
+      }
+    })
+  })
+}
+// End Button Remove Image
