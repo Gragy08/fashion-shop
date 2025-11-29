@@ -31,11 +31,22 @@ router.patch('/category/delete/:id', productController.deleteCategoryPatch);
 
 router.get('/create', productController.create);
 
-// router.post(
-//   '/create', 
-//   upload.none(), 
-//   productValidate.createPost, 
-//   productController.createPost
-// );
+router.post(
+  '/create', 
+  upload.none(), 
+  productValidate.createPost, 
+  productController.createPost
+);
+
+router.get('/attribute', productController.attribute);
+
+router.get('/attribute/create', productController.createAttribute);
+
+router.post(
+  '/attribute/create', 
+  upload.none(), 
+  productValidate.createAttributePost, 
+  productController.createAttributePost
+);
 
 export default router;
