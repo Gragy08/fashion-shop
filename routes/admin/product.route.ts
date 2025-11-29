@@ -58,4 +58,6 @@ router.patch(
   productController.editAttributePatch
 );
 
+router.patch('/attribute/delete/:id', productController.deleteAttributePatch);
+
 export default router;
