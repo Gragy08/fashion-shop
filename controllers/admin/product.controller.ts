@@ -268,6 +268,10 @@ export const createPost = async (req: Request, res: Response) => {
       req.body.priceNew = req.body.priceOld;
     }
 
+    req.body.attributes = JSON.parse(req.body.attributes);
+
+    req.body.variants = JSON.parse(req.body.variants);
+
     const newRecord = new Product(req.body);
     await newRecord.save();
 
