@@ -49,6 +49,8 @@ router.patch(
   productController.editPatch
 );
 
+router.patch('/delete/:id', productController.deletePatch);
+
 router.get('/attribute', productController.attribute);
 
 router.get('/attribute/create', productController.createAttribute);
