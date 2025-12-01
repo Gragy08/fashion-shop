@@ -38,6 +38,8 @@ router.post(
   productController.createPost
 );
 
+router.get('/list', productController.list);
+
 router.get('/attribute', productController.attribute);
 
 router.get('/attribute/create', productController.createAttribute);
