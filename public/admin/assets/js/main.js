@@ -1308,6 +1308,7 @@ if(productCreateForm) {
       const priceNew = event.target.priceNew.value;
       const priceWholeSale = event.target.priceWholeSale.value;
       const attributes = getCheckboxList("attributes");
+      const stock = event.target.stock.value;
 
       // variants
       const variants = [];
@@ -1330,6 +1331,8 @@ if(productCreateForm) {
         let priceWholeSale = tr.querySelector("[price-whole-sale]").value;
         if(priceWholeSale) {
           priceWholeSale = parseInt(priceWholeSale);
+        } else {
+          priceWholeSale = 0;
         }
         let priceOld = tr.querySelector("[price-old]").value;
         if(priceOld) {
@@ -1341,12 +1344,20 @@ if(productCreateForm) {
         } else {
           priceNew = priceOld;
         }
+        let stock = tr.querySelector("[stock]").value;
+        if(stock) {
+          stock = parseInt(stock);
+        } else {
+          stock = 0;
+        }
+
         variants.push({
           status: status,
           attributeValue: attributeValue,
           priceWholeSale: priceWholeSale,
           priceOld: priceOld,
-          priceNew: priceNew
+          priceNew: priceNew,
+          stock: stock
         });
       })
       // End variants
@@ -1364,6 +1375,7 @@ if(productCreateForm) {
       formData.append("priceWholeSale", priceWholeSale);
       formData.append("priceOld", priceOld);
       formData.append("priceNew", priceNew);
+      formData.append("stock", stock);
       formData.append("attributes", JSON.stringify(attributes));
       formData.append("variants", JSON.stringify(variants));
 
@@ -1652,6 +1664,7 @@ if(buttonRenderVariant) {
       <th scope="col">Giá kênh sĩ</th>
       <th scope="col">Giá kênh lẻ (cũ)</th>
       <th scope="col">Giá kênh lẻ (mới)</th>
+      <th scope="col">Còn lại</th>
     `;
     variantHead.innerHTML = variantHeadHTML;
 
@@ -1702,6 +1715,9 @@ if(buttonRenderVariant) {
         </td>
         <td>
           <input class="form-control" type="number" value="${priceNew}" price-new>
+        </td>
+        <td>
+          <input class="form-control" type="number" stock>
         </td>
       `;
       tr += "</tr>";
