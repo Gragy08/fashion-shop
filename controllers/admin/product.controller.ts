@@ -258,6 +258,10 @@ export const createPost = async (req: Request, res: Response) => {
       lower: true
     });
 
+    if(req.body.priceWholeSale) {
+      req.body.priceWholeSale = parseInt(req.body.priceWholeSale);
+    }
+
     if(req.body.priceOld) {
       req.body.priceOld = parseInt(req.body.priceOld);
     }

@@ -36,18 +36,22 @@ block main
                 option(value="draft") Bản nháp
                 option(value="active") Hoạt động
                 option(value="inactive") Tạm dừng
-          .col-md-12.col-lg-12
+          .col-md-6.col-lg-6
             .mb-3
               label.form-label Danh mục
               div(class="checkbox-list" checkbox-list="category")
                 +checkbox-list(categoryList)
           .col-md-6.col-lg-6
             .mb-3
-              label.form-label(for="priceOld") Giá cũ
+              label.form-label(for="priceWholeSale") Giá kênh sỉ
+              input.form-control(id="priceWholeSale" type="number" name="priceWholeSale")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="priceOld") Giá kênh lẻ (cũ)
               input.form-control(id="priceOld" type="number" name="priceOld")
           .col-md-6.col-lg-6
             .mb-3
-              label.form-label(for="priceNew") Giá mới
+              label.form-label(for="priceNew") Giá kênh lẻ (mới)
               input.form-control(id="priceNew" type="number" name="priceNew")
           .col-md-12.col-lg-12
             .mb-3

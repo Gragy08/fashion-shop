@@ -7,6 +7,7 @@ const schema = new mongoose.Schema(
     position: Number, // Vị trí càng cao càng xuất hiện đầu
     category: [String],
     images: [String],
+    priceWholeSale: Number,
     priceOld: Number,
     priceNew: Number,
     attributes: Array,

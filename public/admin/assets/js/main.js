@@ -1306,6 +1306,7 @@ if(productCreateForm) {
       const images = getMultiFile("images");
       const priceOld = event.target.priceOld.value;
       const priceNew = event.target.priceNew.value;
+      const priceWholeSale = event.target.priceWholeSale.value;
       const attributes = getCheckboxList("attributes");
 
       // variants
@@ -1313,7 +1314,23 @@ if(productCreateForm) {
       const listTr = document.querySelectorAll("[variant-table] tbody tr");
       listTr.forEach(tr => {
         const status = tr.querySelector("input.form-check-input").checked;
-        const attributeValue = JSON.parse(tr.querySelector("[attribute-value]").value);
+        let attributeValue = JSON.parse(tr.querySelector("[attribute-value]").value);
+
+        // Cập nhật lại Label nếu người dùng có sửa input (Color)
+        const labelInputs = tr.querySelectorAll(`input[name="variant_label_edit"]`);
+        labelInputs.forEach(input => {
+          const index = parseInt(input.getAttribute("data-attr-index"));
+          const newLabel = input.value;
+          // Cập nhật label tại vị trí index trong attributeValue array
+          if(attributeValue[index] && newLabel) {
+            attributeValue[index].label = newLabel;
+          }
+        });
+
+        let priceWholeSale = tr.querySelector("[price-whole-sale]").value;
+        if(priceWholeSale) {
+          priceWholeSale = parseInt(priceWholeSale);
+        }
         let priceOld = tr.querySelector("[price-old]").value;
         if(priceOld) {
           priceOld = parseInt(priceOld);
@@ -1327,6 +1344,7 @@ if(productCreateForm) {
         variants.push({
           status: status,
           attributeValue: attributeValue,
+          priceWholeSale: priceWholeSale,
           priceOld: priceOld,
           priceNew: priceNew
         });
@@ -1343,10 +1361,13 @@ if(productCreateForm) {
       formData.append("description", description);
       formData.append("content", content);
       formData.append("images", JSON.stringify(images));
+      formData.append("priceWholeSale", priceWholeSale);
       formData.append("priceOld", priceOld);
       formData.append("priceNew", priceNew);
       formData.append("attributes", JSON.stringify(attributes));
       formData.append("variants", JSON.stringify(variants));
+
+      console.log(variants);
       
       fetch(`/${pathAdmin}/product/create`, {
         method: "POST",
@@ -1587,12 +1608,14 @@ if(productEditAttributeForm) {
 // button-render-variant
 const generateVariants = (attributes) => {
   // Bước 1: Lấy ra danh sách các lựa chọn (options) cho từng thuộc tính
-  const optionList = attributes.map(attribute =>
+  const optionList = attributes.map((attribute, attrIdx) =>
     attribute.options.map(option => ({
       attrId: attribute._id,
       attrType: attribute.type,
+      attrName: attribute.name,
       label: option.label,
       value: option.value,
+      index: attrIdx, // Thêm index để theo dõi vị trí thuộc tính
     }))
   )
 
@@ -1626,13 +1649,15 @@ if(buttonRenderVariant) {
       `;
     })
     variantHeadHTML += `
-      <th scope="col">Giá cũ</th>
-      <th scope="col">Giá mới</th>
+      <th scope="col">Giá kênh sĩ</th>
+      <th scope="col">Giá kênh lẻ (cũ)</th>
+      <th scope="col">Giá kênh lẻ (mới)</th>
     `;
     variantHead.innerHTML = variantHeadHTML;
 
     // Hiển thị các hàng
     const variantBody = variantTable.querySelector("tbody");
+    const priceWholeSale = document.querySelector(`[name="priceWholeSale"]`).value;
     const priceOld = document.querySelector(`[name="priceOld"]`).value;
     const priceNew = document.querySelector(`[name="priceNew"]`).value;
     let variantBodyHTML = "";
@@ -1648,11 +1673,30 @@ if(buttonRenderVariant) {
         </td>
       `;
       variant.forEach(item => {
-        tr += `
-          <td>${item.label}</td>
-        `;
+        // Hiển thị input cho Color, static text cho các attribute khác
+        if(item.attrName == "Color") {
+             tr += `
+            <td>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  value="${item.label}"
+                  name="variant_label_edit"
+                  data-attr-index="${item.index}"
+                  data-attr-name="${item.attrName}"
+                >
+            </td>
+          `;
+        } else {
+             tr += `
+            <td>${item.label}</td>
+          `;
+        }
       })
       tr += `
+        <td>
+          <input class="form-control" type="number" value="${priceWholeSale}" price-whole-sale>
+        </td>
         <td>
           <input class="form-control" type="number" value="${priceOld}" price-old>
         </td>
