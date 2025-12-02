@@ -9,7 +9,7 @@ header(class="header_2")
             )
             img.img-fluid.w-100(
               alt="Zenis" 
-              src="/client/assets/images/logo_2.png"
+              src="/admin/assets/images/logos/TPQLogo.jpg"
               )
           .d-block.d-lg-none(
             aria-controls="offcanvasWithBothOptions" 
@@ -22,15 +22,13 @@ header(class="header_2")
       .col-xXl-6.col-xl-5.col-lg-5.d-none.d-lg-block
         form(action="#")
           select(class="select_2")
-            option All Categories
-            option Fashion
-            option Elentronics
-            option Fashion & Beauty
-            option Jewelry
-            option Grocery
+            option(value="") Sản phẩm
+            each category in categoryProductList
+              option(value=category.slug)= category.name
+            
           .input
             input(
-              placeholder="Search your product..." 
+              placeholder="Tìm kiếm sản phẩm.." 
               type="text"
               )
             button(type="submit")
@@ -43,16 +41,11 @@ header(class="header_2")
             h3
               | Hotline:
               a(href="callto:1234567890")
-                span +(402) 763 282 46
+                span +(84) 982 887 766
         .d-flex.flex-wrap.align-items-center.justify-content-end(class="topbar_right")
           select.language(class="select_js")
-            option English
-            option Arabic
-            option Hindi
-            option Chinese
+            option Tiếng Việt
+            option Tiếng Anh (English)
           select(class="select_js")
-            option $USD
-            option €EUR
-            option ¥JPY
-            option £GBP
-            option ₹INR
+            option VNĐ
+            option USD
