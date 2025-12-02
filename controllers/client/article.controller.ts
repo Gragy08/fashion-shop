@@ -118,6 +118,24 @@ export const detail = async (req: Request, res: Response) => {
     }
   }
 
+  // Tăng view
+  const viewed = `viewed_${articleDetail.id}`;
+  res.cookie(viewed, "true", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV == "production",
+    sameSite: "strict",
+    maxAge: 30 * 60 * 1000 // 30 phút
+  })
+  if(!req.cookies[viewed]) {
+    await Blog.updateOne({
+      slug: req.params.slug,
+      deleted: false,
+      status: "published"
+    }, {
+      $inc: { view: 1 } // mỗi lần gọi tăng 1
+    })
+  }
+
   res.render("client/pages/article-detail", {
     pageTitle: articleDetail.name,
     articleDetail: articleDetail,
