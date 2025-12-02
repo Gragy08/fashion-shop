@@ -26,15 +26,15 @@ block main
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="value") Giá trị giảm
-              input.form-control(id="value" type="number" name="value")
+              input.form-control(id="value" type="text" name="value" format-money)
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="minOrderValue") Giá trị đơn hàng tối thiểu
-              input.form-control(id="minOrderValue" type="number" name="minOrderValue")
+              input.form-control(id="minOrderValue" type="text" name="minOrderValue" format-money)
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="maxDiscountValue") Số tiền giảm tối đa (Nếu kiểu %)
-              input.form-control(id="maxDiscountValue" type="number" name="maxDiscountValue")
+              input.form-control(id="maxDiscountValue" type="text" name="maxDiscountValue" format-money)
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="usageLimit") Số lượng giới hạn
