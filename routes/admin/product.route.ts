@@ -75,4 +75,11 @@ router.patch('/attribute/delete/:id', productController.deleteAttributePatch);
 
 router.get('/export/csv', productController.exportCSV);
 
+router.post(
+  '/import/csv',
+  upload.single("file"), 
+  productValidate.importCSVPost,
+  productController.importCSVPost
+);
+
 export default router;
