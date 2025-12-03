@@ -20,16 +20,16 @@ header(class="header_2")
             span(class="mobile_menu_icon")
               i.far.fa-stream(class="menu_icon_bar")
       .col-xXl-6.col-xl-5.col-lg-5.d-none.d-lg-block
-        form(action="#")
-          select(class="select_2")
-            option(value="") Sản phẩm
-            each category in categoryProductList
-              option(value=category.slug)= category.name
-            
+        form(form-search)
+          select(class="select_2" name="category")
+            option(value="") Tất cả danh mục
+            each item in categoryProductList
+              option(value=item.slug) #{item.name} 
           .input
             input(
               placeholder="Tìm kiếm sản phẩm.." 
               type="text"
+              name="keyword"
               )
             button(type="submit")
               i.far.fa-search
